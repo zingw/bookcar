@@ -48,8 +48,12 @@ spring:
       # it can be set to any label, branch or commit of the configuration source Git repository
   data:
     mongodb:
-      uri: mongodb://localhost:27017/?waitQueueMultiple=1000
+      host: 103.173.66.104
+      port: 27017
       database: bookcar
+      username: root
+      password: 1q23456!
+      authentication-database: admin
   mail:
     host: localhost
     port: 25
