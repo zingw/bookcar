@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  data:
+    mongodb:
+      host: 103.173.66.104
+      port: 27017
+      database: bookcar
+      username: root
+      password: 1q23456!
+      authentication-database: admin
+
+#HS512 Key
+jwt:
+  secret: nkmLcwZBSS53Gr00/VvUO1+47iD28FFSYaW0IcuMp4k4aw4puUaRUf8PY4MBXAerym/YKLFNkYcYxlsPaIXHdVpoAD4hw/HSYXu7JkjB8lge7AVExviE1RwpKDKwyjkrimBx3fnJMigcMOxys2sfTQT9nUnTwBuT5Mr8kTZcKr+0EpVvMRIujJCIKhfXPk6wfv5JHYfUHrVe5vfcs4P3+kHHF+IXSNLl2LO1oQ==[root@localhost ~]#
