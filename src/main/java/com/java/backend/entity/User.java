@@ -1,5 +1,6 @@
 package com.java.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
@@ -20,7 +21,10 @@ public class User extends Auditor {
     private String email;
     private String phoneNumber;
     private List<Authority> authorityList;
+
+    @JsonIgnore
     private String password;
+
     private boolean activated;
 
     public List<GrantedAuthority> getGrantedAuthorityList() {
