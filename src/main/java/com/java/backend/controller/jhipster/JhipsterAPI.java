@@ -1,4 +1,4 @@
-package com.java.backend.controller;
+package com.java.backend.controller.jhipster;
 
 import com.java.backend.entity.User;
 import com.java.backend.service.UserService;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class UserController {
+public class JhipsterAPI {
 
     private final UserService userService;
 

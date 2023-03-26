@@ -49,6 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
             .antMatchers("/api/account")
             .permitAll()
+            .antMatchers("/management/info")
+            .permitAll() //jhipster
             .anyRequest()
             .authenticated()
             .and()
