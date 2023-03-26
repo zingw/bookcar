@@ -10,7 +10,8 @@ public enum ResponseStatus {
     USER_NAME_IS_INVALID("Kh"),
     CAN_NOT_PARSE_FILE("Không thể tải ảnh avatar"),
     PASSWORD_INCORRECT("Sai mật khẩu"),
-    USER_NOT_ACTIVATED("Người dùng này chưa được kích hoạt");
+    USER_NOT_ACTIVATED("Người dùng này chưa được kích hoạt"),
+    INVALID_CREDENTIALS("Sai tên mật khẩu hoặc tài khoản");
 
     private final String detail;
 
