@@ -1,4 +1,4 @@
-package com.java.backend;
+package com.java.backend.controller;
 
 import com.java.backend.dto.response.PageResponse;
 import com.java.backend.entity.User;

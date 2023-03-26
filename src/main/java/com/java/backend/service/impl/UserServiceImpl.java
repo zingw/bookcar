@@ -50,14 +50,15 @@ public class UserServiceImpl implements UserService {
             .fullName(newUser.getFullName())
             .email(newUser.getEmail())
             .phoneNumber(newUser.getPhoneNumber())
-            .authorities(newUser.getAuthorities())
-            .password(passwordEncoder.encode(newUser.getPassword()))
             .activated(true)
             .build();
 
         return userRepository.save(user);
     }
 
+    /**
+     * Only update basic information
+     */
     @Override
     public void updateUser(User user) {
         if (StringUtils.isBlank(user.getId())) {
@@ -72,9 +73,6 @@ public class UserServiceImpl implements UserService {
                 existUser.setUsername(user.getUsername());
                 existUser.setFullName(user.getFullName());
                 existUser.setEmail(user.getEmail());
-                existUser.setPassword(passwordEncoder.encode(user.getPassword()));
-                existUser.setActivated(user.isActivated());
-                existUser.setAuthorities(user.getAuthorities());
 
                 userRepository.save(existUser);
             });

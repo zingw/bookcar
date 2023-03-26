@@ -26,6 +26,6 @@ public class JhipsterAPI {
 
     @GetMapping("/authorities")
     public ResponseEntity<List<Authority>> fetchAllAuthorities() {
-        return new ResponseEntity<>(Authority.geAllAuthorities(), HttpStatus.OK);
+        return new ResponseEntity<>(Authority.getAllAuthorities(), HttpStatus.OK);
     }
 }

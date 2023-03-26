@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -19,10 +22,17 @@ public class User extends Auditor {
     @Id
     private String id;
 
+    @Indexed(unique = true)
     private String username;
+
     private String fullName;
+
+    @Indexed(unique = true)
     private String email;
+
+    @Indexed(unique = true)
     private String phoneNumber;
+
     private List<Authority> authorities;
 
     @JsonIgnore
