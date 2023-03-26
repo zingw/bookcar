@@ -1,6 +1,5 @@
 package com.java.backend.security.jwtutils;
 
-import com.java.backend.entity.Authority;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

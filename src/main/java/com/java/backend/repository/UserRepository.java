@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByUsername(String username);
+
     boolean existsByUsernameOrEmailOrPhoneNumberAndActivatedTrue(String username, String email, String phoneNumber);
+
     Page<User> findByDeletedFalse(Pageable pageable);
 }

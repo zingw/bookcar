@@ -1,10 +1,10 @@
 package com.java.backend.service.impl;
 
-import com.java.backend.constant.Code;
+import com.java.backend.constant.ResponseStatus;
 import com.java.backend.dto.request.RegisterRequest;
 import com.java.backend.dto.response.RegisterResponse;
 import com.java.backend.entity.User;
-import com.java.backend.exception.UserException;
+import com.java.backend.exception.BookCarException;
 import com.java.backend.repository.UserRepository;
 import com.java.backend.service.RegisterService;
 import java.util.Collections;
@@ -20,7 +20,7 @@ public class RegisterServiceImpl implements RegisterService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public RegisterResponse register(RegisterRequest request) throws UserException {
+    public RegisterResponse register(RegisterRequest request) throws BookCarException {
         if (
             userRepository.existsByUsernameOrEmailOrPhoneNumberAndActivatedTrue(
                 request.getUsername(),
@@ -28,7 +28,7 @@ public class RegisterServiceImpl implements RegisterService {
                 request.getPhoneNumber()
             )
         ) {
-            throw new UserException(Code.USER_EXISTED);
+            throw new BookCarException(ResponseStatus.USER_EXISTED);
         }
 
         User user = User

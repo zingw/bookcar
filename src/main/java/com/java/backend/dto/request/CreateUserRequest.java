@@ -1,20 +1,20 @@
 package com.java.backend.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.java.backend.entity.Role;
 import javax.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-public class RegisterRequest {
+public class CreateUserRequest {
 
-    @JsonProperty("login")
     @NotBlank
     private String username;
 
     @NotBlank
-    private String password;
+    private String fullName;
+
+    @NotBlank
+    private Role role;
 
     @NotBlank
     private String email;

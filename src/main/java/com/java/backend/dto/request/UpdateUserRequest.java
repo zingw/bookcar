@@ -4,11 +4,17 @@ import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class LoginRequest {
+public class UpdateUserRequest {
+
+    @NotBlank
+    private String id;
 
     @NotBlank
     private String username;
 
     @NotBlank
-    private String password;
+    private String fullName;
+
+    @NotBlank
+    private String email;
 }

@@ -3,6 +3,7 @@ package com.java.backend.controller;
 import com.java.backend.dto.request.RegisterRequest;
 import com.java.backend.dto.response.RegisterResponse;
 import com.java.backend.service.RegisterService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class RegisterController {
     private final RegisterService registerService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
         RegisterResponse response = registerService.register(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

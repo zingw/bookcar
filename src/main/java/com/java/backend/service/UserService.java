@@ -1,19 +1,20 @@
 package com.java.backend.service;
 
+import com.java.backend.dto.request.ChangePasswordRequest;
+import com.java.backend.dto.request.CreateUserRequest;
+import com.java.backend.dto.request.UpdateUserRequest;
 import com.java.backend.dto.response.BasicUserInfoResponse;
 import com.java.backend.dto.response.PageResponse;
 import com.java.backend.entity.User;
-import com.java.backend.exception.FileException;
-import com.java.backend.exception.UserException;
-import java.io.IOException;
+import com.java.backend.exception.BookCarException;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
-    User fetchCurrentUserInfo() throws UserException;
+    User fetchCurrentUserInfo() throws BookCarException;
 
-    User createUser(User user);
+    User createUser(CreateUserRequest user);
 
-    void updateUser(User user);
+    void updateUser(UpdateUserRequest user);
 
     User findByUsername(String username);
 
@@ -21,5 +22,7 @@ public interface UserService {
 
     void deleteByUsername(String username);
 
-    BasicUserInfoResponse getBasicInfo() throws FileException;
+    BasicUserInfoResponse getBasicInfo() throws BookCarException;
+
+    void changePassword(ChangePasswordRequest request);
 }

@@ -1,8 +1,11 @@
 package com.java.backend.controller;
 
+import com.java.backend.dto.request.CreateUserRequest;
+import com.java.backend.dto.request.UpdateUserRequest;
 import com.java.backend.dto.response.PageResponse;
 import com.java.backend.entity.User;
 import com.java.backend.service.UserService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,13 +20,13 @@ public class AdminController {
     private final UserService userService;
 
     @PostMapping("/new")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest user) {
         User response = userService.createUser(user);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestBody User user) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest user) {
         userService.updateUser(user);
         return new ResponseEntity<>(user.getId(), HttpStatus.OK);
     }

@@ -1,8 +1,9 @@
 package com.java.backend.security;
 
-import com.java.backend.constant.Code;
+import com.java.backend.constant.ResponseStatus;
+import com.java.backend.dto.request.CreateUserRequest;
 import com.java.backend.entity.User;
-import com.java.backend.exception.UserException;
+import com.java.backend.exception.BookCarException;
 import com.java.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,13 +27,15 @@ public class UserUtils {
             org.springframework.security.core.userdetails.User currentUser = (org.springframework.security.core.userdetails.User) context
                 .getAuthentication()
                 .getPrincipal();
-            return userRepository.findByUsername(currentUser.getUsername()).orElseThrow(() -> new UserException(Code.USER_NOT_FOUND));
+            return userRepository
+                .findByUsername(currentUser.getUsername())
+                .orElseThrow(() -> new BookCarException(ResponseStatus.USER_NAME_IS_INVALID));
         }
 
         return null;
     }
 
-    public String generateAvatarPathFor(User user) {
+    public String generateAvatarPathFor(CreateUserRequest user) {
         return String.join("/", rootDir, user.getUsername());
     }
 }
