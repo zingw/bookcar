@@ -1,19 +1,22 @@
 package com.java.backend.service.impl;
 
-import com.java.backend.constant.UserConstant;
+import com.java.backend.constant.Code;
+import com.java.backend.dto.response.BasicUserInfoResponse;
 import com.java.backend.dto.response.PageResponse;
 import com.java.backend.entity.User;
+import com.java.backend.exception.FileException;
 import com.java.backend.exception.UserException;
 import com.java.backend.repository.UserRepository;
+import com.java.backend.security.UserUtils;
 import com.java.backend.service.UserService;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,26 +25,17 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private static final String USER_LOGGED_OUT = "USER_LOGGED_OUT";
+    private final UserUtils userUtils;
 
     @Override
     public User fetchCurrentUserInfo() throws UserException {
-        SecurityContext context = SecurityContextHolder.getContext();
-
-        if (context.getAuthentication().getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
-            org.springframework.security.core.userdetails.User currentUser = (org.springframework.security.core.userdetails.User) context
-                .getAuthentication()
-                .getPrincipal();
-            return userRepository.findByUsername(currentUser.getUsername()).orElseThrow(() -> new UserException(USER_LOGGED_OUT));
-        }
-        return null;
+        return userUtils.getCurrentUserLogin();
     }
 
     @Override
     public User createUser(User newUser) {
         if (userExisted(newUser.getUsername(), newUser.getEmail(), newUser.getPhoneNumber())) {
-            throw new UserException(UserConstant.USER_EXISTED);
+            throw new UserException(Code.USER_EXISTED);
         }
 
         User user = User
@@ -50,6 +44,7 @@ public class UserServiceImpl implements UserService {
             .fullName(newUser.getFullName())
             .email(newUser.getEmail())
             .phoneNumber(newUser.getPhoneNumber())
+            .avatarPath(userUtils.generateAvatarPathFor(newUser))
             .activated(true)
             .build();
 
@@ -62,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
         if (StringUtils.isBlank(user.getId())) {
-            throw new UserException(UserConstant.USER_ID_IS_EMPTY);
+            throw new UserException(Code.USER_ID_IS_EMPTY);
         }
 
         String id = user.getId();
@@ -76,18 +71,18 @@ public class UserServiceImpl implements UserService {
 
                 userRepository.save(existUser);
             });
-        throw new UserException(UserConstant.USER_ID_IS_INVALID);
+        throw new UserException(Code.USER_ID_IS_INVALID);
     }
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UserException(UserConstant.USERNAME_NOT_FOUND));
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserException(Code.USERNAME_NOT_FOUND));
     }
 
     @Override
     public PageResponse<User> findAll(Pageable pageable) {
         Page<User> pageUser = userRepository.findByDeletedFalse(pageable);
-        return PageResponse.<User>builder().content(pageUser.getContent()).totalElement(pageUser.getTotalElements()).build();
+        return new PageResponse<>(pageUser.getContent(), pageUser.getTotalElements());
     }
 
     @Override
@@ -97,7 +92,21 @@ public class UserServiceImpl implements UserService {
             .ifPresent(user -> {
                 user.setDeleted(true);
             });
-        throw new UserException(UserConstant.USER_NAME_IS_INVALID);
+        throw new UserException(Code.USER_NAME_IS_INVALID);
+    }
+
+    @Override
+    public BasicUserInfoResponse getBasicInfo() throws FileException {
+        User user = userUtils.getCurrentUserLogin();
+
+        File ava = new File(user.getAvatarPath());
+        byte[] ava_bytes;
+        try {
+            ava_bytes = Files.readAllBytes(ava.toPath());
+        } catch (IOException e) {
+            throw new FileException(Code.CAN_NOT_PARSE_FILE);
+        }
+        return BasicUserInfoResponse.builder().role(user.getRole()).username(user.getUsername()).avatar(ava_bytes).build();
     }
 
     public boolean userExisted(String username, String email, String phoneNumber) {

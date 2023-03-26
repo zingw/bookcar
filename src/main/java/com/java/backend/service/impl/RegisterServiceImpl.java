@@ -1,6 +1,6 @@
 package com.java.backend.service.impl;
 
-import com.java.backend.constant.UserConstant;
+import com.java.backend.constant.Code;
 import com.java.backend.dto.request.RegisterRequest;
 import com.java.backend.dto.response.RegisterResponse;
 import com.java.backend.entity.User;
@@ -28,7 +28,7 @@ public class RegisterServiceImpl implements RegisterService {
                 request.getPhoneNumber()
             )
         ) {
-            throw new UserException(UserConstant.USER_EXISTED);
+            throw new UserException(Code.USER_EXISTED);
         }
 
         User user = User
