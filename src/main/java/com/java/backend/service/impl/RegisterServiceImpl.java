@@ -1,5 +1,6 @@
 package com.java.backend.service.impl;
 
+import com.java.backend.constant.UserConstant;
 import com.java.backend.dto.request.RegisterRequest;
 import com.java.backend.dto.response.RegisterResponse;
 import com.java.backend.entity.PendingRegister;
@@ -21,19 +22,24 @@ public class RegisterServiceImpl implements RegisterService {
     private final PasswordEncoder passwordEncoder;
     private final PendingRegisterRepository pendingRegisterRepository;
 
-    private static final String USER_EXISTED = "USER_EXISTED";
-
     @Override
     public RegisterResponse register(RegisterRequest request) throws UserException {
-        if (userRepository.existsByUsernameOrEmail(request.getUsername(), request.getEmail())) {
-            throw new UserException(USER_EXISTED);
+        if (
+            userRepository.existsByUsernameOrEmailOrPhoneNumberAndActivatedTrue(
+                request.getUsername(),
+                request.getEmail(),
+                request.getPhoneNumber()
+            )
+        ) {
+            throw new UserException(UserConstant.USER_EXISTED);
         }
 
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setAuthorityList(Collections.emptyList());
+        user.setAuthorities(Collections.emptyList());
+        user.setPhoneNumber(request.getPhoneNumber());
         user.setActivated(false);
 
         user = userRepository.save(user);

@@ -15,7 +15,7 @@ export class UserManagementResolve implements Resolve<IUser | null> {
   resolve(route: ActivatedRouteSnapshot): Observable<IUser | null> {
     const id = route.params['login'];
     if (id) {
-      return this.service.find(id);
+      return this.service.findByUsername(id);
     }
     return of(null);
   }

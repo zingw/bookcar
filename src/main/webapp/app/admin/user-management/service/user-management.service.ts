@@ -9,19 +9,19 @@ import { IUser } from '../user-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserManagementService {
-  private resourceUrl = this.applicationConfigService.getEndpointFor('api/admin/users');
+  private resourceUrl = this.applicationConfigService.getEndpointFor('api/admin/user');
 
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   create(user: IUser): Observable<IUser> {
-    return this.http.post<IUser>(this.resourceUrl, user);
+    return this.http.post<IUser>(`${this.resourceUrl}/new`, user);
   }
 
   update(user: IUser): Observable<IUser> {
-    return this.http.put<IUser>(this.resourceUrl, user);
+    return this.http.put<IUser>(`${this.resourceUrl}/update`, user);
   }
 
-  find(login: string): Observable<IUser> {
+  findByUsername(login: string): Observable<IUser> {
     return this.http.get<IUser>(`${this.resourceUrl}/${login}`);
   }
 
@@ -31,7 +31,7 @@ export class UserManagementService {
   }
 
   delete(login: string): Observable<{}> {
-    return this.http.delete(`${this.resourceUrl}/${login}`);
+    return this.http.delete(`${this.resourceUrl}/delete/${login}`);
   }
 
   authorities(): Observable<string[]> {

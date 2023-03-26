@@ -33,7 +33,7 @@ public enum Authority {
         this.role = role;
     }
 
-    public static List<Authority> getAvailableAdministratorAuths() {
+    public static List<Authority> geAllAuthorities() {
         return new ArrayList<>(EnumSet.allOf(Authority.class));
     }
 

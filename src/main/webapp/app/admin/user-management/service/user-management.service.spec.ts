@@ -28,7 +28,7 @@ describe('User Service', () => {
     it('should return User', () => {
       let expectedResult: string | undefined;
 
-      service.find('user').subscribe(received => {
+      service.findByUsername('user').subscribe(received => {
         expectedResult = received.login;
       });
 
@@ -52,7 +52,7 @@ describe('User Service', () => {
     it('should propagate not found response', () => {
       let expectedResult = 0;
 
-      service.find('user').subscribe({
+      service.findByUsername('user').subscribe({
         error: (error: HttpErrorResponse) => (expectedResult = error.status),
       });
 

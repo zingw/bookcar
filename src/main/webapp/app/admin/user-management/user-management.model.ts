@@ -1,11 +1,10 @@
 export interface IUser {
-  id: string | null;
-  login?: string;
-  firstName?: string | null;
-  lastName?: string | null;
+  id?: string;
+  username?: string;
+  fullName?: string;
   email?: string;
+  phoneNumber?: string;
   activated?: boolean;
-  langKey?: string;
   authorities?: string[];
   createdBy?: string;
   createdDate?: Date;
@@ -14,18 +13,15 @@ export interface IUser {
 }
 
 export class User implements IUser {
-  constructor(
-    public id: string | null,
-    public login?: string,
-    public firstName?: string | null,
-    public lastName?: string | null,
-    public email?: string,
-    public activated?: boolean,
-    public langKey?: string,
-    public authorities?: string[],
-    public createdBy?: string,
-    public createdDate?: Date,
-    public lastModifiedBy?: string,
-    public lastModifiedDate?: Date
-  ) {}
+  id?: string;
+  username?: string;
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  activated?: boolean;
+  authorities?: string[];
+  createdBy?: string;
+  createdDate?: Date;
+  lastModifiedBy?: string;
+  lastModifiedDate?: Date;
 }
