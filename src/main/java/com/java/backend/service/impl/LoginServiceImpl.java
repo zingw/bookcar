@@ -2,8 +2,7 @@ package com.java.backend.service.impl;
 
 import com.java.backend.dto.request.LoginRequest;
 import com.java.backend.dto.response.LoginResponse;
-import com.java.backend.exception.ExceptionUtils;
-import com.java.backend.exception.Status;
+import com.java.backend.exception.UserException;
 import com.java.backend.security.jwtutils.TokenManager;
 import com.java.backend.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +22,15 @@ public class LoginServiceImpl implements LoginService {
     private static final String INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
 
     @Override
-    public LoginResponse authenticate(LoginRequest request) {
+    public LoginResponse authenticate(LoginRequest request) throws UserException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        } catch (RuntimeException e) {
-            throw new ExceptionUtils(Status.UNKNOWN_ERROR).withMessage(INVALID_CREDENTIALS).build();
+        } catch (Exception e) {
+            throw new UserException(INVALID_CREDENTIALS);
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
         String token = tokenManager.generateJwtToken(userDetails);
-        return new LoginResponse(token);
+        return new LoginResponse(token, true);
     }
 }

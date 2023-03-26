@@ -4,7 +4,7 @@ import com.java.backend.dto.request.RegisterRequest;
 import com.java.backend.dto.response.RegisterResponse;
 import com.java.backend.entity.PendingRegister;
 import com.java.backend.entity.User;
-import com.java.backend.exception.ExceptionUtils;
+import com.java.backend.exception.UserException;
 import com.java.backend.repository.PendingRegisterRepository;
 import com.java.backend.repository.UserRepository;
 import com.java.backend.service.RegisterService;
@@ -21,10 +21,12 @@ public class RegisterServiceImpl implements RegisterService {
     private final PasswordEncoder passwordEncoder;
     private final PendingRegisterRepository pendingRegisterRepository;
 
+    private static final String USER_EXISTED = "USER_EXISTED";
+
     @Override
-    public RegisterResponse register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) throws UserException {
         if (userRepository.existsByUsernameOrEmail(request.getUsername(), request.getEmail())) {
-            throw ExceptionUtils.USERNAME_EMAIL_EXIST.build();
+            throw new UserException(USER_EXISTED);
         }
 
         User user = new User();

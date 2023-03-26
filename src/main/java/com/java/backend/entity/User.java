@@ -27,6 +27,7 @@ public class User extends Auditor {
 
     private boolean activated;
 
+    @JsonIgnore
     public List<GrantedAuthority> getGrantedAuthorityList() {
         return this.authorityList.stream().map(auth -> (GrantedAuthority) auth::name).collect(Collectors.toList());
     }

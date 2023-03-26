@@ -15,13 +15,15 @@ import org.springframework.stereotype.Component;
 public class TokenManager implements Serializable {
 
     private static final long serialVersionUID = 7008375124389347049L;
-    public static final long TOKEN_VALIDITY = 10 * 60 * 60;
+    private static final long TOKEN_VALIDITY = 10 * 60 * 60;
+    private static final String AUTHORITY_LIST = "authorities";
 
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     public String generateJwtToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put(AUTHORITY_LIST, userDetails.getAuthorities());
         return Jwts
             .builder()
             .setClaims(claims)
