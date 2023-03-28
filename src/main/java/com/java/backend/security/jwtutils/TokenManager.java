@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,13 +21,13 @@ public class TokenManager implements Serializable {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public String generateJwtToken(UserDetails userDetails) {
+    public String generateJwtToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put(AUTHORITY_LIST, userDetails.getAuthorities());
+        claims.put(AUTHORITY_LIST, user.getGrantedAuthorityList());
         return Jwts
             .builder()
             .setClaims(claims)
-            .setSubject(userDetails.getUsername())
+            .setSubject(user.getUsername())
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
             .signWith(SignatureAlgorithm.HS256, jwtSecret)
