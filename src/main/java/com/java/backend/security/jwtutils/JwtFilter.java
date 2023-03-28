@@ -1,24 +1,28 @@
 package com.java.backend.security.jwtutils;
 
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.java.backend.constant.ResponseStatus;
+import com.java.backend.entity.User;
+import com.java.backend.exception.BookCarException;
+import com.java.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtUserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private final TokenManager tokenManager;
     private static final int BEGIN_INDEX = 7;
     private static final String TOKEN_PREFIX = "Bearer ";
@@ -36,13 +40,13 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            User user = userRepository.findByUsername(username).orElseThrow(() -> new BookCarException(ResponseStatus.INVALID_CREDENTIALS));
 
-            if (tokenManager.validateJwtToken(token, userDetails)) {
+            if (tokenManager.validateJwtToken(token, user)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
+                    user,
                     null,
-                    userDetails.getAuthorities()
+                    user.getGrantedAuthorityList()
                 );
 
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

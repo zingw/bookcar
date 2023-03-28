@@ -9,11 +9,8 @@ import com.java.backend.dto.response.PageResponse;
 import com.java.backend.entity.User;
 import com.java.backend.exception.BookCarException;
 import com.java.backend.repository.UserRepository;
-import com.java.backend.security.UserUtils;
 import com.java.backend.service.UserService;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import com.java.backend.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,7 @@ public class UserServiceImpl implements UserService {
             .builder()
             .username(newUser.getUsername())
             .fullName(newUser.getFullName())
+            .password(passwordEncoder.encode(newUser.getPassword()))
             .role(newUser.getRole())
             .email(newUser.getEmail())
             .phoneNumber(newUser.getPhoneNumber())

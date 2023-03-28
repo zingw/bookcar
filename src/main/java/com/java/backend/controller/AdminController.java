@@ -5,12 +5,13 @@ import com.java.backend.dto.request.UpdateUserRequest;
 import com.java.backend.dto.response.PageResponse;
 import com.java.backend.entity.User;
 import com.java.backend.service.UserService;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
