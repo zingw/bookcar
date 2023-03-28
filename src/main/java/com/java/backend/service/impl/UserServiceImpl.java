@@ -11,9 +11,6 @@ import com.java.backend.exception.BookCarException;
 import com.java.backend.repository.UserRepository;
 import com.java.backend.service.UserService;
 import com.java.backend.utils.UserUtils;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @Service
 @RequiredArgsConstructor

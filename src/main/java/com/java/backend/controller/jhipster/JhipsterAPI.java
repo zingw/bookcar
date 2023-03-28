@@ -3,13 +3,14 @@ package com.java.backend.controller.jhipster;
 import com.java.backend.entity.Authority;
 import com.java.backend.entity.User;
 import com.java.backend.service.UserService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

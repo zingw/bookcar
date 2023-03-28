@@ -1,8 +1,6 @@
 package com.java.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +8,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
