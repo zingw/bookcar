@@ -1,6 +1,7 @@
 package com.java.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.java.backend.enums.Authority;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

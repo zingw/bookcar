@@ -11,29 +11,33 @@ import com.java.backend.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
-    private final AuthenticationManager authenticationManager;
     private final TokenManager tokenManager;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public LoginResponse authenticate(LoginRequest request) throws BookCarException {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        } catch (Exception e) {
-            throw new BookCarException(ResponseStatus.INVALID_CREDENTIALS);
-        }
 
         final User user = userRepository
             .findByUsername(request.getUsername())
-            .orElseThrow(() -> new BookCarException(ResponseStatus.INVALID_CREDENTIALS));
+            .orElseThrow(() -> new BookCarException(ResponseStatus.USERNAME_NOT_FOUND));
+
+        if (!isPasswordCorrect(user, request)) {
+            throw new BookCarException(ResponseStatus.INVALID_CREDENTIALS);
+        }
 
         String token = tokenManager.generateJwtToken(user);
         return new LoginResponse(token, true);
+    }
+
+    boolean isPasswordCorrect(User user, LoginRequest request) {
+        return passwordEncoder.matches(request.getPassword(), user.getPassword());
     }
 }
