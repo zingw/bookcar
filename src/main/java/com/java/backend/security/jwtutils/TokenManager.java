@@ -1,5 +1,6 @@
 package com.java.backend.security.jwtutils;
 
+import com.java.backend.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -34,11 +35,11 @@ public class TokenManager implements Serializable {
             .compact();
     }
 
-    public Boolean validateJwtToken(String token, UserDetails userDetails) {
+    public Boolean validateJwtToken(String token, User user) {
         String username = getUsernameFromToken(token);
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
         boolean isTokenExpired = claims.getExpiration().before(new Date());
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired);
+        return (username.equals(user.getUsername()) && !isTokenExpired);
     }
 
     public String getUsernameFromToken(String token) {
