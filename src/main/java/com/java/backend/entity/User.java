@@ -39,8 +39,8 @@ public class User extends Auditor {
     @JsonIgnore
     private String password;
 
-    private boolean deleted;
-    private boolean activated;
+    private Boolean deleted;
+    private Boolean activated;
 
     @JsonIgnore
     public List<GrantedAuthority> getGrantedAuthorityList() {

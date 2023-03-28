@@ -9,8 +9,8 @@ import com.java.backend.dto.response.PageResponse;
 import com.java.backend.entity.User;
 import com.java.backend.exception.BookCarException;
 import com.java.backend.repository.UserRepository;
-import com.java.backend.security.UserUtils;
 import com.java.backend.service.UserService;
+import com.java.backend.utils.UserUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
             .builder()
             .username(newUser.getUsername())
             .fullName(newUser.getFullName())
+            .password(passwordEncoder.encode(newUser.getPassword()))
             .role(newUser.getRole())
             .email(newUser.getEmail())
             .phoneNumber(newUser.getPhoneNumber())

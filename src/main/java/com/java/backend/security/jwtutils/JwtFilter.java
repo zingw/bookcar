@@ -1,6 +1,9 @@
 package com.java.backend.security.jwtutils;
 
+import com.java.backend.entity.User;
+import com.java.backend.repository.UserRepository;
 import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
+    private final UserRepository userRepository;
     private final JwtUserDetailsService userDetailsService;
     private final TokenManager tokenManager;
     private static final int BEGIN_INDEX = 7;
@@ -37,10 +41,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            Optional<User> userOptional = userRepository.findByUsername(username);
 
             if (tokenManager.validateJwtToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
+                    userOptional.orElse(null),
                     null,
                     userDetails.getAuthorities()
                 );

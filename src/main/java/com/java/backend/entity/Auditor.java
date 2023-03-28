@@ -1,6 +1,6 @@
 package com.java.backend.entity;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,11 +14,11 @@ public class Auditor {
     private String createdBy;
 
     @CreatedDate
-    private Date createdDate;
+    private ZonedDateTime createdDate;
 
     @LastModifiedBy
     private String lastModifiedBy;
 
     @LastModifiedDate
-    private Date lastModifiedDate;
+    private ZonedDateTime lastModifiedDate;
 }

@@ -24,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
             .findByUsername(username)
             .orElseThrow(() -> new BookCarException(ResponseStatus.USERNAME_NOT_FOUND));
 
-        if (!user.isActivated()) {
+        if (!user.getActivated()) {
             throw new BookCarException(ResponseStatus.USER_NOT_ACTIVATED);
         }
 
