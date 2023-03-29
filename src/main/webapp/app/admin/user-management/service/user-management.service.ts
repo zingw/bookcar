@@ -6,6 +6,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { Pagination } from 'app/core/request/request.model';
 import { IUser } from '../user-management.model';
+import {UserListResponse} from "../list/user.list";
 
 @Injectable({ providedIn: 'root' })
 export class UserManagementService {
@@ -25,9 +26,9 @@ export class UserManagementService {
     return this.http.get<IUser>(`${this.resourceUrl}/${login}`);
   }
 
-  query(req?: Pagination): Observable<HttpResponse<IUser[]>> {
+  query(req?: Pagination): Observable<HttpResponse<UserListResponse>> {
     const options = createRequestOption(req);
-    return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<UserListResponse>(`${this.resourceUrl}/query`, { params: options, observe: 'response' });
   }
 
   delete(login: string): Observable<{}> {

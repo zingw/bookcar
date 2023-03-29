@@ -7,7 +7,7 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh</span>
       </button>
-      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
+      <button class="btn btn-primary" [routerLink]="['./new']">
         <fa-icon icon="plus"></fa-icon> <span>Create a new user</span>
       </button>
     </div>
@@ -21,51 +21,42 @@
     <table class="table table-striped" aria-describedby="user-management-page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="login"><span>Login</span> <fa-icon icon="sort"></fa-icon></th>
+
+          <th scope="col" jhiSortBy="login"><span>Username</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="login"><span>Full name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="email"><span>Email</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col"></th>
-          <th scope="col"><span>Profiles</span></th>
+          <th scope="col" jhiSortBy="phoneNumber"><span>Phone number</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="activated"><span>Activated</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="createdDate"><span>Created date</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="lastModifiedBy"><span>Modified by</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="lastModifiedDate"><span>Modified date</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col"></th>
+
         </tr>
       </thead>
       <tbody *ngIf="users">
         <tr *ngFor="let user of users; trackBy: trackIdentity">
-          <td>
-            <a [routerLink]="['./', user.login, 'view']">{{ user.id }}</a>
-          </td>
-          <td>{{ user.login }}</td>
+          <td><a [routerLink]="['./', user.id, 'view']">{{ user.username }}</a></td>
+          <td>{{ user.fullName }}</td>
           <td>{{ user.email }}</td>
+          <td>{{ user.phoneNumber }}</td>
           <td>
             <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated">Deactivated</button>
             <button
               class="btn btn-success btn-sm"
               (click)="setActive(user, false)"
               *ngIf="user.activated"
-              [disabled]="!currentAccount || currentAccount.login === user.login"
+              [disabled]="!currentAccount || currentAccount.login === user.username"
             >
               Activated
             </button>
           </td>
-          <td>
-            <div *ngFor="let authority of user.authorities">
-              <span class="badge bg-info">{{ authority }}</span>
-            </div>
-          </td>
           <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td>{{ user.lastModifiedBy }}</td>
-          <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
           <td class="text-end">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">
+              <button type="submit" [routerLink]="['./', user.username, 'view']" class="btn btn-info btn-sm">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline">View</span>
               </button>
 
-              <button type="submit" [routerLink]="['./', user.login, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+              <button type="submit" [routerLink]="['./', user.username, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline">Edit</span>
               </button>
@@ -74,7 +65,7 @@
                 type="button"
                 (click)="deleteUser(user)"
                 class="btn btn-danger btn-sm"
-                [disabled]="!currentAccount || currentAccount.login === user.login"
+                [disabled]="!currentAccount || currentAccount.login === user.username"
               >
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline">Delete</span>

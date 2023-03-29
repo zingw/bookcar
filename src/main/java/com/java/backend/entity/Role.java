@@ -1,6 +1,5 @@
 package com.java.backend.entity;
 
-import com.java.backend.entity.Auditor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
