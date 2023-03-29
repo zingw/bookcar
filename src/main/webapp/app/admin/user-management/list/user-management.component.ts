@@ -9,8 +9,9 @@ import { ASC, DESC, SORT } from 'app/config/navigation.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { UserManagementService } from '../service/user-management.service';
-import { User } from '../user-management.model';
+import {IUser, User} from '../user-management.model';
 import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
+import {UserListResponse} from "./user.list";
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -18,7 +19,7 @@ import { UserManagementDeleteDialogComponent } from '../delete/user-management-d
 })
 export class UserManagementComponent implements OnInit {
   currentAccount: Account | null = null;
-  users: User[] | null = null;
+  users !: IUser[] ;
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -67,9 +68,9 @@ export class UserManagementComponent implements OnInit {
         sort: this.sort(),
       })
       .subscribe({
-        next: (res: HttpResponse<User[]>) => {
+        next: (res: HttpResponse<UserListResponse>) => {
           this.isLoading = false;
-          this.onSuccess(res.body, res.headers);
+          this.onSuccess(res.body);
         },
         error: () => (this.isLoading = false),
       });
@@ -104,8 +105,8 @@ export class UserManagementComponent implements OnInit {
     return result;
   }
 
-  private onSuccess(users: User[] | null, headers: HttpHeaders): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.users = users;
+  private onSuccess(response: UserListResponse | null): void {
+    this.totalItems = response?.totalElement || 0;
+    this.users = response?.content || [];
   }
 }

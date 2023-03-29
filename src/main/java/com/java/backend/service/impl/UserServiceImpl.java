@@ -6,6 +6,7 @@ import com.java.backend.dto.request.CreateUserRequest;
 import com.java.backend.dto.request.UpdateUserRequest;
 import com.java.backend.dto.response.BasicUserInfoResponse;
 import com.java.backend.dto.response.PageResponse;
+import com.java.backend.dto.response.UserResponse;
 import com.java.backend.entity.User;
 import com.java.backend.exception.BookCarException;
 import com.java.backend.repository.UserRepository;
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(CreateUserRequest newUser) {
+    public UserResponse createUser(CreateUserRequest newUser) {
         if (userExisted(newUser.getUsername(), newUser.getEmail(), newUser.getPhoneNumber())) {
             throw new BookCarException(ResponseStatus.USER_EXISTED);
         }
@@ -55,7 +56,8 @@ public class UserServiceImpl implements UserService {
             .activated(true)
             .build();
 
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        return new UserResponse(user);
     }
 
     /**
@@ -77,13 +79,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new BookCarException(ResponseStatus.USER_NAME_IS_INVALID));
+    public UserResponse findByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new BookCarException(ResponseStatus.USERNAME_NOT_FOUND));
+        return new UserResponse(user);
     }
 
     @Override
-    public PageResponse<User> findAll(Pageable pageable) {
-        Page<User> pageUser = userRepository.findByDeletedFalse(pageable);
+    public PageResponse<UserResponse> findAll(Pageable pageable) {
+        Page<UserResponse> pageUser = userRepository.findByDeletedFalse(pageable);
         return new PageResponse<>(pageUser.getContent(), pageUser.getTotalElements());
     }
 

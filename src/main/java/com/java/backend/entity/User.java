@@ -32,17 +32,13 @@ public class User extends Auditor {
 
     private String avatarPath;
     private Role role;
-
     @Indexed(unique = true)
     private String phoneNumber;
-
     private List<Authority> authorities;
-
     @JsonIgnore
     private String password;
-
-    private Boolean deleted;
-    private Boolean activated;
+    private boolean deleted;
+    private boolean activated;
 
     @JsonIgnore
     public List<GrantedAuthority> getGrantedAuthorityList() {
