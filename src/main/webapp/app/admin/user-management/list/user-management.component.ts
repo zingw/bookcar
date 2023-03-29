@@ -16,6 +16,7 @@ import {UserListResponse} from "./user.list";
 @Component({
   selector: 'jhi-user-mgmt',
   templateUrl: './user-management.component.html',
+  styleUrls : ['../../../../content/css/common.css']
 })
 export class UserManagementComponent implements OnInit {
   currentAccount: Account | null = null;

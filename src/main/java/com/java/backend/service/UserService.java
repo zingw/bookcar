@@ -17,7 +17,7 @@ public interface UserService {
 
     void updateUser(UpdateUserRequest user);
 
-    UserResponse findByUsername(String username);
+    UserResponse findById(String username);
 
     PageResponse<UserResponse> findAll(Pageable pageable);
 

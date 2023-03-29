@@ -32,9 +32,9 @@ public class AdminController {
         return new ResponseEntity<>(user.getId(), HttpStatus.OK);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<UserResponse> findByUsername(@PathVariable String username) {
-        UserResponse response = userService.findByUsername(username);
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> findById(@PathVariable String id) {
+        UserResponse response = userService.findById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

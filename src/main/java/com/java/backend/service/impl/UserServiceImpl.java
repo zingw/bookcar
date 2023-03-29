@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse findByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new BookCarException(ResponseStatus.USERNAME_NOT_FOUND));
+    public UserResponse findById(String id) {
+        User user = userRepository.findById(id).orElseThrow(
+            () -> new BookCarException(ResponseStatus.USER_ID_IS_INVALID));
         return new UserResponse(user);
     }
 
